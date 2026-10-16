@@ -41,6 +41,9 @@ importers:
       '@googleapis/youtube':
         specifier: 40.0.0
         version: 40.0.0
+      '@guardcore/hono':
+        specifier: 4.4.0
+        version: 4.4.0(acorn@8.18.0)(he@1.2.0)(hono@4.13.13)(ioredis@6.0.0)(lru-cache@11.5.3)
       '@honeybadger-io/js':
         specifier: 6.16.6
         version: 6.16.6
@@ -1154,6 +1157,35 @@ packages:
   '@googleapis/youtube@40.0.0':
     resolution: {integrity: sha512-t6arIbY75ZxbryTCMkKiV2jCcRzHaUk/dS1RjR6HAewkbI3HobnlaSWqaxiQKRCxqswXq02aeBS8/I+dW10qvw==}
     engines: {node: '>=22.0.0'}
+
+  '@guardcore/core@4.4.0':
+    resolution: {integrity: sha512-627usOmHebYQwPjeRFdFDxWWnYrwlbOFdYVyjPW6WRfpBLMtRZJmufRbfGWksfzbtLAp0Uk9KO4lhhYKn73NNw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      acorn: ^8
+      he: ^1
+      ioredis: ^5
+      lru-cache: ^11
+      maxmind: ^4
+      re2-wasm: ^1
+    peerDependenciesMeta:
+      acorn:
+        optional: true
+      he:
+        optional: true
+      ioredis:
+        optional: true
+      lru-cache:
+        optional: true
+      maxmind:
+        optional: true
+      re2-wasm:
+        optional: true
+
+  '@guardcore/hono@4.4.0':
+    resolution: {integrity: sha512-9WWHn5nEEGOW6HOH7ev5kBFRpIDVNyDWZSZOvVrlJkAczuvsCMs96dhcV/8/jwjUDOjExYV6kX9BTpUDQztmSg==}
+    peerDependencies:
+      hono: ^4
 
   '@honeybadger-io/core@6.11.2':
     resolution: {integrity: sha512-GD1NrwEnLG0z5ZV72T3u+MahE2hjBCKguG/+AVaoN6t+1Hn0NVVZiOzCsY0dwhhQfyqk/n85Ra1dnwqpAxggcQ==}
@@ -4236,6 +4268,15 @@ packages:
     resolution: {integrity: sha512-Chq1s4CY7jmh8gO2qvLIJyfCDIN+EHLFW/9iShnp1z8FjBQMoodWP1kDC36VAMXXIvAjj4ARa7ntfAV2BrjsbA==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
+  guardagent@3.2.4:
+    resolution: {integrity: sha512-3IcUgaQiPFx3nEOa0kjolfUAFaEizOTNFBQ9xV3wgC+tRv+PWanR1nPgJXnYDnt1QMA4e6GCg3CPCWQo0CPpRw==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      ioredis: ^5.0.0
+    peerDependenciesMeta:
+      ioredis:
+        optional: true
+
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -4389,6 +4430,10 @@ packages:
   ip-regex@5.0.0:
     resolution: {integrity: sha512-fOCG6lhoKKakwv+C6KdsOnGvgXnmgfmp0myi3bcNwj3qfwPAxRKWEuFhvEFF7ceYIz6+1jRZ+yguLFAmUNPEfw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  ipaddr.js@2.5.0:
+    resolution: {integrity: sha512-aq+t5NAc+cS6rZQQVWC2x98CPqGtKKTMDd4Gaodv0wShnItdKg/51djkGJ1hqH+Oy0ivDftCbSLCQob8zso01w==}
+    engines: {node: '>= 10'}
 
   is-builtin-module@5.0.0:
     resolution: {integrity: sha512-f4RqJKBUe5rQkJ2eJEJBXSticB3hGbN9j0yxxMQFqIW89Jp9WYFtzfTcRlstDKVUTRzSOTLKRfO9vIztenwtxA==}
@@ -6864,6 +6909,29 @@ snapshots:
       googleapis-common: 9.1.0
     transitivePeerDependencies:
       - supports-color
+
+  '@guardcore/core@4.4.0(acorn@8.18.0)(he@1.2.0)(ioredis@6.0.0)(lru-cache@11.5.3)':
+    dependencies:
+      ipaddr.js: 2.5.0
+      zod: 4.6.7
+    optionalDependencies:
+      acorn: 8.18.0
+      he: 1.2.0
+      ioredis: 6.0.0
+      lru-cache: 11.5.3
+
+  '@guardcore/hono@4.4.0(acorn@8.18.0)(he@1.2.0)(hono@4.13.13)(ioredis@6.0.0)(lru-cache@11.5.3)':
+    dependencies:
+      '@guardcore/core': 4.4.0(acorn@8.18.0)(he@1.2.0)(ioredis@6.0.0)(lru-cache@11.5.3)
+      guardagent: 3.2.4(ioredis@6.0.0)
+      hono: 4.13.13
+    transitivePeerDependencies:
+      - acorn
+      - he
+      - ioredis
+      - lru-cache
+      - maxmind
+      - re2-wasm
 
   '@honeybadger-io/core@6.11.2':
     dependencies:
@@ -9495,6 +9563,10 @@ snapshots:
   graphql@16.14.2:
     optional: true
 
+  guardagent@3.2.4(ioredis@6.0.0):
+    optionalDependencies:
+      ioredis: 6.0.0
+
   has-flag@4.0.0: {}
 
   hashery@1.5.1:
@@ -9662,6 +9734,8 @@ snapshots:
   ip-address@10.7.3: {}
 
   ip-regex@5.0.0: {}
+
+  ipaddr.js@2.5.0: {}
 
   is-builtin-module@5.0.0:
     dependencies:

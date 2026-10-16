@@ -54,6 +54,12 @@ type ConfigEnvKeys =
     | 'PAC_SCRIPT'
     // Access control
     | 'ACCESS_KEY'
+    | 'GUARD_ENABLE'
+    | 'GUARD_RATE_LIMIT'
+    | 'GUARD_RATE_LIMIT_WINDOW'
+    | 'GUARD_ALLOW_IPS'
+    | 'GUARD_BLOCK_IPS'
+    | 'GUARD_TRUSTED_PROXIES'
     // Logging
     | 'DEBUG_INFO'
     | 'LOGGER_LEVEL'
@@ -335,6 +341,14 @@ export type Config = {
     pacScript?: string;
     // access control
     accessKey?: string;
+    guard: {
+        enabled: boolean;
+        rateLimit: number;
+        rateLimitWindow: number;
+        allowIps?: string[];
+        blockIps: string[];
+        trustedProxies: string[];
+    };
     // logging
     debugInfo: string;
     loggerLevel: string;
@@ -788,6 +802,12 @@ const toBoolean = (value: string | undefined, defaultValue: boolean) => {
 
 const toInt = (value: string | undefined, defaultValue?: number) => (value === undefined ? defaultValue : Number.parseInt(value));
 
+const toList = (value: string | undefined) =>
+    value
+        ?.split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
+
 const getAssetsUrl = (rootUrl: string, assetsUrl?: string) => {
     if (assetsUrl) {
         return assetsUrl.replace(/\/+$/, '');
@@ -888,6 +908,14 @@ const calculateValue = () => {
         pacScript: envs.PAC_SCRIPT,
         // access control
         accessKey: envs.ACCESS_KEY,
+        guard: {
+            enabled: toBoolean(envs.GUARD_ENABLE, false),
+            rateLimit: toInt(envs.GUARD_RATE_LIMIT, 60),
+            rateLimitWindow: toInt(envs.GUARD_RATE_LIMIT_WINDOW, 60),
+            allowIps: toList(envs.GUARD_ALLOW_IPS),
+            blockIps: toList(envs.GUARD_BLOCK_IPS) ?? [],
+            trustedProxies: toList(envs.GUARD_TRUSTED_PROXIES) ?? [],
+        },
         // logging
         // 是否显示 Debug 信息，取值 'true' 'false' 'some_string' ，取值为 'true' 时永久显示，取值为 'false' 时永远隐藏，取值为 'some_string' 时请求带上 '?debug=some_string' 显示
         debugInfo: envs.DEBUG_INFO || 'true',

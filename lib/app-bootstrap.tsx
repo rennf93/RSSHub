@@ -4,11 +4,13 @@ import { jsxRenderer } from 'hono/jsx-renderer';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 
 import api from '@/api';
+import { config } from '@/config';
 import { errorHandler, notFoundHandler } from '@/errors';
 import accessControl from '@/middleware/access-control';
 import antiHotlink from '@/middleware/anti-hotlink';
 import cache from '@/middleware/cache';
 import debug from '@/middleware/debug';
+import guard from '@/middleware/guard';
 import header from '@/middleware/header';
 import honeybadger from '@/middleware/honeybadger';
 import mLogger from '@/middleware/logger';
@@ -42,6 +44,9 @@ app.use(accessControl);
 app.use(debug);
 app.use(template);
 app.use(header);
+if (config.guard.enabled) {
+    app.use(guard);
+}
 app.use(antiHotlink);
 app.use(parameter);
 app.use(cache);
