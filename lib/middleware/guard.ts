@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from 'hono';
 import { config } from '@/config';
 import logger from '@/utils/logger';
 
-// Every detection category except 'recon': its path probes match route segments such as /changelog, /language, README.md and .shtml.
+// Every detection category except 'recon' (its path probes match route segments such as /changelog, /language, README.md and .shtml) and 'ssrf' (browsers send the page address as Referer, and guard-core 4.4.0 flags localhost and LAN addresses in it).
 const detectionCategories = [
     'cmd_injection',
     'cms_probing',
@@ -19,7 +19,6 @@ const detectionCategories = [
     'proto_pollution',
     'sensitive_file',
     'sqli',
-    'ssrf',
     'template',
     'xml',
     'xss',

@@ -103,6 +103,20 @@ describe('guard', () => {
         expect([400, 403]).toContain(response.status);
     });
 
+    it('does not block a localhost or LAN Referer', async () => {
+        const app = await setup();
+        const statuses = await Promise.all(
+            ['http://localhost:1200/', 'http://127.0.0.1:1200/', 'http://192.168.1.20:1200/'].map(async (referer, index) => (await app.request('/test/1', { headers: { Referer: referer } }, peer(`203.0.113.${20 + index}`))).status)
+        );
+        expect(statuses).toEqual([200, 200, 200]);
+    });
+
+    it('blocks an attack pattern in the Referer', async () => {
+        const app = await setup();
+        const response = await app.request('/test/1', { headers: { Referer: 'http://example.com/?q=<script>alert(1)</script>' } }, peer('203.0.113.23'));
+        expect([400, 403]).toContain(response.status);
+    });
+
     it('does not block a route path that carries a URL parameter', async () => {
         const app = await setup();
         const url = encodeURIComponent('https://example.com/news/中文?id=1&page=2');
